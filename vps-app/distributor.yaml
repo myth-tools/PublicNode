@@ -1,0 +1,8 @@
+#  PUBLICNODE DISTRIBUTION CONFIG
+# Ensures notebook_template.dart is refreshed before ANY packaging operation
+
+name: publicnode
+version: 0.1.0
+
+# This hook runs before fastforge/flutter_distributor starts building
+before_build: "make -C .. sync"

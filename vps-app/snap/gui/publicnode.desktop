@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=PublicNode
+Exec=publicnode %U
+Terminal=false
+Type=Application
+Icon=icon.png
+Categories=Utility;
+MimeType=x-scheme-handler/publicnode;
+Comment=Industry-grade terminal viewer for PublicNode VPS

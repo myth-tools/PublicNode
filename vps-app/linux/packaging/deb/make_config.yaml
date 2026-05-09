@@ -1,0 +1,14 @@
+package_name: publicnode
+display_name: PublicNode
+maintainer:
+  name: shesher
+  email: shesher0007@gmail.com
+description: Industry-grade cross-platform terminal viewer for the PublicNode VPS.
+homepage: https://github.com/myth-tools/PublicNode
+icon: assets/icon.png
+section: utils
+priority: optional
+installed_size: 100000
+license: GPLv3
+depends:
+  - libnotify-bin

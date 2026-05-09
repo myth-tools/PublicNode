@@ -1,0 +1,39 @@
+# --- Your Identity on Kaggle ---
+identity:
+  vps_name: "PublicNode"                 # Name of the VPS instance
+  kaggle_username: "mohammadhasanulislam"  # Your Kaggle username
+  creator: "Shesher Hasan"        # Creator name
+  organization: "myth-tools"          # Organization name
+  kernel_slug: "publicnode-vps-engine"         # Fresh slug to bypass Kaggle 400 corruption
+  vault_slug: "vps-storage"               # Slug for the Kaggle dataset (persistent storage)
+
+# --- Distribution & CI/CD ---
+distribution:
+  github_repo: "myth-tools/PublicNode"   # Target repository for GitHub Releases (owner/repo)
+  release:
+    organization: "myth-tools"
+    author: "Shesher Hasan"
+    license: "GNU GPLv3"
+    platforms: ["linux/amd64", "android/apk"]
+    signing:
+      enabled: true
+      method: "GPG/Keystore"
+
+# --- Engine & Port Configuration ---
+engine:
+  version: "0.1.0"
+  sentinel_enabled: true                   # Auto-revival loop for background services
+  sentinel_interval_sec: 30               # How often the sentinel checks services
+  pycache_enabled: false                  # Suppress __pycache__ bytecode creation
+  ssh_enabled: true                       # Enable direct local terminal access via SSH
+  ssh_port: 22                            # Internal SSH port (standard 22)
+  engine_port: 5003                       # Internal engine API port
+
+# --- Cloudflare Tunnel Configuration ---
+tunnel:
+  provider: "cloudflared"                  # Ultra-fast TryCloudflare Quick Tunnel
+
+# --- Signal Channel (ntfy.sh real-time control) ---
+signal:
+  service: "ntfy.sh"                       # Notification relay (free, no account needed)
+  topic_prefix: "vps-root"           # Unique prefix for your signal channel

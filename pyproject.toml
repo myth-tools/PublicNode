@@ -1,0 +1,109 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "PublicNode"
+version = "0.1.0"
+description = "Industrial-Grade Kaggle-Powered Cloud Workstation"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "GPLv3"}
+authors = [
+    {name = "Shesher Hasan"}
+]
+keywords = ["kaggle", "vps", "cloud", "workstation", "terminal", "headless"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3.13",
+]
+
+dependencies = [
+    "fastapi>=0.136.1",
+    "uvicorn[standard]>=0.46.0",
+    "python-multipart>=0.0.27",
+    "psutil>=7.2.2",
+    "requests>=2.33.1",
+    "pyyaml>=6.0.3",
+    "kaggle>=2.1.2",
+    "python-slugify>=8.0.4",
+    "python-dateutil>=2.9.0.post0",
+    "huggingface-hub>=1.14.0",
+    "watchdog>=6.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.15.12",
+    "mypy>=2.0.0",
+    "pytest>=9.0.3",
+    "types-requests>=2.33.0.20260508",
+    "types-pyyaml>=6.0.12.20260508",
+    "types-psutil>=7.2.2.20260508",
+    "types-python-dateutil>=2.9.0.20260508",
+    "bandit>=1.9.4",
+]
+
+[project.scripts]
+vps-build = "scripts.master_build_vps:main"
+vps-dev-audit = "scripts.lint:main"
+vps-dist = "scripts.dist:main"
+vps-dist-sync = "scripts.update_and_embed:main"
+vps-release = "scripts.release:main"
+
+[tool.uv]
+managed = true
+
+[tool.ruff]
+cache-dir = "/tmp/.ruff_cache"
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "PL", "RSE", "RUF", "B", "C4"]
+ignore = ["PLR0913", "PLR0915", "PLR2004", "PLC0415", "PLW0603", "E501"] # Relaxing complexity for industrial scripts
+
+[tool.ruff.lint.pylint]
+max-branches = 25
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/master_build_vps.py" = ["E501"]
+"scripts/lint.py" = ["E501"]
+"scripts/release.py" = ["E501"]
+"vps-os/vps_os_engine.py" = ["E501"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["vps-os", "scripts"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+exclude = ["publicnode-vps-engine", ".venv", "notes"]
+cache_dir = "/tmp/.mypy_cache"
+
+[tool.hatch.build.targets.wheel]
+packages = ["vps-os", "scripts"]
+
+[tool.pytest.ini_options]
+cache_dir = "/tmp/.pytest_cache"
+testpaths = ["tests"]
+python_files = "test_*.py"
+
+[tool.pyrefly]
+ignore-missing-imports = ["kaggle.*"]
+search_path = [
+    ".",
+    "vps-os",
+    "scripts",
+    ".venv/lib/python3.13/site-packages"
+]
+python_version = "3.13"
+python_platform = "linux"
+project_includes = ["vps-os", "scripts"]
+project_excludes = ["**/__pycache__/**", "publicnode-vps-engine/**"]

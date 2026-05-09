@@ -1,0 +1,25 @@
+FROM almalinux:9
+ARG CACHE_BUST=1
+
+# Install RPM build tools and compression utilities
+RUN dnf install -y \
+    rpm-build \
+    rpmdevtools \
+    rpmlint \
+    tar \
+    gzip \
+    && dnf clean all
+
+# Create a non-privileged build user
+RUN useradd -m -s /bin/bash builder
+USER builder
+WORKDIR /home/builder
+
+# Prepare the RPM build directory structure
+RUN rpmdev-setuptree
+
+# The spec file and sources will be mounted here
+VOLUME ["/home/builder/rpmbuild/SPECS", "/home/builder/rpmbuild/SOURCES", "/home/builder/dist"]
+
+ENTRYPOINT ["rpmbuild"]
+CMD ["-bb"]

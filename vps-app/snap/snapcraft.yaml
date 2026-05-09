@@ -1,0 +1,102 @@
+name: publicnode-vps
+base: core22
+adopt-info: publicnode
+title: PublicNode Terminal
+icon: snap/gui/icon.png
+license: GPL-3.0
+compression: lzo
+summary: Industry-grade terminal viewer for PublicNode VPS
+description: |
+  PublicNode Terminal is a high-fidelity cross-platform viewer designed to 
+  interface with the PublicNode VPS infrastructure. It combines premium 
+  Glassmorphism design with a high-performance SSH core to provide a 
+  seamless cloud workstation experience on any device.
+
+  Features:
+  - Zero-latency connectivity via Cloudflare QUIC backbone
+  - Military-grade credential encryption (AES-256)
+  - Real-time system telemetry (CPU, RAM, Disk)
+  - Remote file explorer with upload/download
+  - Mobile-optimized terminal input toolbar
+
+website: https://github.com/myth-tools/PublicNode
+contact: shesher0llms@gmail.com
+issues: https://github.com/myth-tools/PublicNode/issues
+source-code: https://github.com/myth-tools/PublicNode
+donation: https://github.com/myth-tools/PublicNode
+
+# Organizational Metadata
+passthrough:
+  creator: "Shesher Hasan"
+  organization: "myth-tools"
+  license: "GPL-3.0"
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+# Suppress industrial false-positive linter warnings and host glibc mismatch in destructive mode
+lint:
+  ignore:
+    - library
+
+parts:
+  publicnode:
+    source: .
+    plugin: dump
+    source-subdir: build/linux/x64/release/bundle
+    # This script extracts the version from pubspec.yaml for 'adopt-info'
+    override-pull: |
+      craftctl default
+      # Extract version from pubspec.yaml at the project root
+      VERSION=$(grep 'version: ' pubspec.yaml | sed 's/version: //')
+      craftctl set version=$VERSION
+    stage-packages:
+      - libcanberra-gtk3-module
+      - libgl1-mesa-glx
+      - openjdk-17-jre-headless
+      - libnotify-bin
+    # Industrial Bloat Reduction: Exclude unused libraries identified in audit
+    prime:
+      - -usr/lib/x86_64-linux-gnu/libGL.so.1*
+      - -usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0*
+      - -usr/lib/x86_64-linux-gnu/libcolordprivate.so.2*
+      - -usr/lib/x86_64-linux-gnu/libdconf.so.1*
+      - -usr/lib/x86_64-linux-gnu/libicuio.so.70*
+      - -usr/lib/x86_64-linux-gnu/libicutest.so.70*
+
+  desktop-entry:
+    plugin: dump
+    source: snap/gui
+    organize:
+      publicnode.desktop: usr/share/applications/publicnode.desktop
+      icon.png: usr/share/pixmaps/publicnode.png
+
+slots:
+  dbus-publicnode:
+    interface: dbus
+    bus: session
+    name: com.publicnode.terminal
+
+apps:
+  publicnode:
+    command: publicnode
+    extensions: [gnome]
+    common-id: com.publicnode.terminal
+    desktop: usr/share/applications/publicnode.desktop
+    plugs:
+      - network
+      - network-bind
+      - home
+      - desktop
+      - x11
+      - wayland
+      - opengl
+      - audio-playback
+      - system-observe
+    # Desktop Integration: Register URI scheme
+    slots:
+      - dbus-publicnode

@@ -1,0 +1,136 @@
+# ==============================================================================
+# PublicNode VPS Infrastructure - Master Gitignore
+# ==============================================================================
+
+# -----------------------------------------------------------------------------
+# 1. Operating System & Environment
+# -----------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+
+# -----------------------------------------------------------------------------
+# 2. IDEs & Editors
+# -----------------------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+.history/
+.fleet/
+
+# -----------------------------------------------------------------------------
+# 3. Python Ecosystem (uv, hatch, ruff, mypy)
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+.env.*
+!.env.example
+build/
+dist/
+release/
+sdist/
+*.egg-info/
+.eggs/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# -----------------------------------------------------------------------------
+# 4. Flutter & Dart Ecosystem
+# -----------------------------------------------------------------------------
+# Core Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+vps-app/build/
+
+# Android Specific
+vps-app/android/.gradle/
+vps-app/android/.cxx/
+vps-app/android/.kotlin/
+vps-app/android/gradle-wrapper.jar
+vps-app/android/captures/
+vps-app/android/gradlew
+vps-app/android/gradlew.bat
+vps-app/android/local.properties
+vps-app/android/**/GeneratedPluginRegistrant.java
+
+# Linux Specific
+vps-app/linux/flutter/ephemeral/
+
+# iOS/macOS Specific
+vps-app/ios/**/GeneratedPluginRegistrant.h
+vps-app/ios/**/GeneratedPluginRegistrant.m
+vps-app/ios/.symlinks/
+vps-app/ios/Pods/
+vps-app/macos/Flutter/ephemeral/
+
+# -----------------------------------------------------------------------------
+# 5. Security & Credentials (CRITICAL)
+# -----------------------------------------------------------------------------
+*.pem
+*.key
+*.keystore
+*.jks
+credentials.json
+secrets.yaml
+auth/
+vps.pass
+kaggle.json
+key.properties
+
+# -----------------------------------------------------------------------------
+# 6. Project Specific & Dynamic Artifacts
+# -----------------------------------------------------------------------------
+notes/
+vps_output/
+logs/
+cloudflared/
+# publicnode-vps-engine/
+publicnode-vps-engine/.vps_auth
+publicnode-vps-engine/vps-os
+*.log
+vps-app/dist/
+.agents/
+
+# Archive management
+*.tar.gz
+*.zip
+*.7z
+*.rar
+
+# Exception: Keep auto-backups in vps-storage (if tracked)
+!vps-storage/auto_backup_*.tar.gz
+# -----------------------------------------------------------------------------
+# 7. Snapcraft Build Artifacts (Destructive Mode)
+# -----------------------------------------------------------------------------
+vps-app/parts/
+vps-app/stage/
+vps-app/prime/
+vps-app/overlay/
+vps-app/*.snap
